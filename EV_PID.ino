@@ -7,9 +7,18 @@
 //pin that controls the motor speed
 #define MotorSpeedPin 11
 
+
+double targetPos = 8;
+// 7 meters, box 9.5 inches left of starting point (car drifts right)
+// 8 meters, box 14.5 inches left of starting point (car drifts right)
+// 1.25 meters to the left based per .25 increment of target distance
+
+
 //encoder stuff
 volatile unsigned long currentPosENC = 0;
-double pulsesPerRev = 102;
+double pulsesPerRev;
+
+
 //do NOT change off of pins 2 and 3, attachInterrupt is only on these pins and this capability is needed to make the code work
 //attachInterrupt is essentially being able to run things in the background
 #define EncPinA 2
@@ -25,8 +34,8 @@ bool laser = false;
 bool start = false;
 
 //misc variables
-double wheelDiameterCM = 5.08;
-double targetPos = 8;
+double wheelDiameterCM = 5.08; //change back to 5.08
+
 
 //variables that are the distance values converted into encoder units
 double targetPosENC;
@@ -67,12 +76,38 @@ double calculatePID(double error, double kP, double kI, double kD, double totalE
     speed = -255;
   }
 
+  
+  Serial.println(error);
+
   return speed;
 }
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+
+  // if (targetPos == 8){
+  //   pulsesPerRev = 174.5; // 174 for 8
+  // }
+  // else if (targetPos == 7){
+  //   pulsesPerRev = 172.9;
+  // }
+  // else{
+  //   pulsesPerRev = 173.5; // tune for 8.5
+  // }
+
+  //for drag racer
+  if (targetPos == 8){
+    pulsesPerRev = 174; // 174 for 8
+  }
+  else if (targetPos == 7){
+    pulsesPerRev = 173.5;
+  }
+  else{
+    pulsesPerRev = 173.5; // tune for 8.5
+  }
+
+  //increase ppr to go further, decrease to go less
 
   //init motor pins
   pinMode(MotorDirPin1, OUTPUT);
@@ -143,7 +178,7 @@ void loop() {
   //pid loop below
   while (start==true){
     double error = targetPosENC - currentPosENC;
-    double speed = calculatePID(error, 1, 1, 1);
+    double speed = calculatePID(error, 1, 0, 300);
      
     //change motor direction based on the value of speed
     if (speed > 0){
@@ -163,12 +198,13 @@ void loop() {
     analogWrite(MotorSpeedPin, speed);
 
     //break out of the loop
-    if (error < 50){
+    if (error < 0){
       count++;
     }
 
-    if (count > 10){
+    if (count > 60){
       Serial.println("pid break");
+      digitalWrite(LaserPin, LOW);
       start = false;
     }
   }
