@@ -1,3 +1,23 @@
+/*-------------------------------------------------------------------------
+
+target distance, box distance
+7 meters, box 9.5 inches left of starting point (car drifts right)
+7.25?
+7.5?
+7.75?
+8 meters, box 14.5 inches left of starting point (car drifts right)
+8.25?
+8.5?
+8.75?
+9?
+9.25?
+9.5?
+9.75?
+10?
+
+// 1.25 meters to the left based per .25 increment of target distance
+-------------------------------------------------------------------------*/ 
+
 #include <math.h>
 
 //pins for controlling direction of movement
@@ -7,17 +27,11 @@
 //pin that controls the motor speed
 #define MotorSpeedPin 11
 
-
 double targetPos = 8;
-// 7 meters, box 9.5 inches left of starting point (car drifts right)
-// 8 meters, box 14.5 inches left of starting point (car drifts right)
-// 1.25 meters to the left based per .25 increment of target distance
-
 
 //encoder stuff
 volatile unsigned long currentPosENC = 0;
 double pulsesPerRev;
-
 
 //do NOT change off of pins 2 and 3, attachInterrupt is only on these pins and this capability is needed to make the code work
 //attachInterrupt is essentially being able to run things in the background
