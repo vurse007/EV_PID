@@ -1,19 +1,19 @@
 /*-------------------------------------------------------------------------
 
 target distance, box distance
-7 meters, box 9.5 inches left of starting point (car drifts right)
+7 meters, box 13.4 inches left of starting point (car drifts right)
 7.25?
 7.5?
 7.75?
-8 meters, box 14.5 inches left of starting point (car drifts right)
+8 meters, box 13.4 inches left of starting point (car drifts right)
 8.25?
 8.5?
 8.75?
-9?
+9 box is 24 inches to the left of the ending point
 9.25?
 9.5?
 9.75?
-10?
+10 box is 3.25 inches behind the target point, and 30 inches to the left of the target point
 
 // 1.25 meters to the left based per .25 increment of target distance
 -------------------------------------------------------------------------*/ 
@@ -27,7 +27,7 @@ target distance, box distance
 //pin that controls the motor speed
 #define MotorSpeedPin 11
 
-double targetPos = 8;
+double targetPos = 9;
 
 //encoder stuff
 volatile unsigned long currentPosENC = 0;
@@ -100,26 +100,32 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
 
-  // if (targetPos == 8){
-  //   pulsesPerRev = 174.5; // 174 for 8
-  // }
-  // else if (targetPos == 7){
-  //   pulsesPerRev = 172.9;
-  // }
-  // else{
-  //   pulsesPerRev = 173.5; // tune for 8.5
-  // }
-
-  //for drag racer
   if (targetPos == 8){
-    pulsesPerRev = 174; // 174 for 8
+    pulsesPerRev = 160; // 174 for 8
   }
   else if (targetPos == 7){
-    pulsesPerRev = 173.5;
+    pulsesPerRev = 167.5;
+  }
+  else if (targetPos == 10){
+    pulsesPerRev = 175.5;
+  }
+  else if (targetPos == 9){
+    pulsesPerRev = 174.25;
   }
   else{
     pulsesPerRev = 173.5; // tune for 8.5
   }
+
+  //for drag racer
+  // if (targetPos == 8){
+  //   pulsesPerRev = 174; // 174 for 8
+  // }
+  // else if (targetPos == 7){
+  //   pulsesPerRev = 173.5;
+  // }
+  // else{
+  //   pulsesPerRev = 173.5; // tune for 8.5
+  // }
 
   //increase ppr to go further, decrease to go less
 
