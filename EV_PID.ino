@@ -191,6 +191,7 @@ void loop() {
     Serial.println(targetPos);
     Serial.print("target pos in encoder ticks: ");
     Serial.println(targetPosENC);
+    digitalWrite(LaserPin, LOW);
     currentPosENC = 0;
     start = true;
   }
