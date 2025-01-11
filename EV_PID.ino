@@ -4,7 +4,7 @@ target distance, box distance
 7 meters, box 13.4 inches left of starting point (car drifts right)
 7.25?
 7.5?
-7.75?
+7.75? 13 inches left of end point
 8 meters, box 13.4 inches left of starting point (car drifts right)
 8.25?
 8.5?
@@ -27,7 +27,7 @@ target distance, box distance
 //pin that controls the motor speed
 #define MotorSpeedPin 11
 
-double targetPos = 9;
+double targetPos = 7.75;
 
 //encoder stuff
 volatile unsigned long currentPosENC = 0;
@@ -102,6 +102,9 @@ void setup() {
 
   if (targetPos == 8){
     pulsesPerRev = 160; // 174 for 8
+  }
+  else if (targetPos == 7.75){
+    pulsesPerRev = 157; // 174 for 8
   }
   else if (targetPos == 7){
     pulsesPerRev = 167.5;
