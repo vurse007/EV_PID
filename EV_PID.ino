@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------
 
 target distance, box distance
-7 meters, box 13.4 inches left of starting point (car drifts right)
+7 meters, box 28 inches left of starting point (car drifts right)
 7.25?
 7.5?
 7.75? 13 inches left of end point
-8 meters, box 13.4 inches left of starting point (car drifts right)
+8 meters, box 34 inches left of starting point (car drifts right)
 8.25?
 8.5?
 8.75?
@@ -27,7 +27,7 @@ target distance, box distance
 //pin that controls the motor speed
 #define MotorSpeedPin 11
 
-double targetPos = 7.75;
+double targetPos = 10;
 
 //encoder stuff
 volatile unsigned long currentPosENC = 0;
@@ -91,7 +91,8 @@ double calculatePID(double error, double kP, double kI, double kD, double totalE
   }
 
   
-  Serial.println(error);
+  //Serial.println(error);
+  Serial.println(speed);
 
   return speed;
 }
@@ -100,24 +101,26 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
 
-  if (targetPos == 8){
-    pulsesPerRev = 160; // 174 for 8
-  }
-  else if (targetPos == 7.75){
-    pulsesPerRev = 157; // 174 for 8
-  }
-  else if (targetPos == 7){
-    pulsesPerRev = 167.5;
-  }
-  else if (targetPos == 10){
-    pulsesPerRev = 175.5;
-  }
-  else if (targetPos == 9){
-    pulsesPerRev = 174.25;
-  }
-  else{
-    pulsesPerRev = 173.5; // tune for 8.5
-  }
+  pulsesPerRev = 170; 
+
+  // if (targetPos == 8){
+  //   pulsesPerRev = 160; // 174 for 8
+  // }
+  // else if (targetPos == 7.75){
+  //   pulsesPerRev = 160; // 174 for 8
+  // }
+  // else if (targetPos == 7){
+  //   pulsesPerRev = 167.5;
+  // }
+  // else if (targetPos == 10){
+  //   pulsesPerRev = 175.5;
+  // }
+  // else if (targetPos == 9){
+  //   pulsesPerRev = 174.25;
+  // }
+  // else{
+  //   pulsesPerRev = 173.5; // tune for 8.5
+  // }
 
   //for drag racer
   // if (targetPos == 8){
@@ -201,8 +204,8 @@ void loop() {
 
   //pid loop below
   while (start==true){
-    double error = targetPosENC - currentPosENC;
-    double speed = calculatePID(error, 1, 0, 300);
+    double error = (targetPosENC - currentPosENC) / 255;
+    double speed = calculatePID(error, 200, 1.1, 0.2);
      
     //change motor direction based on the value of speed
     if (speed > 0){
@@ -227,9 +230,9 @@ void loop() {
     }
 
     if (count > 60){
-      Serial.println("pid break");
+      //Serial.println("pid break");
       digitalWrite(LaserPin, LOW);
-      start = false;
+      //start = false;
     }
   }
 }
