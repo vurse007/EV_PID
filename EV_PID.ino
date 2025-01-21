@@ -8,7 +8,7 @@ target distance, box distance
 8 meters, box 34 inches left of starting point (car drifts right)
 8.25?
 8.5?
-8.75?
+8.75? 38.83 inches left
 9 box is 24 inches to the left of the ending point
 9.25?
 9.5?
